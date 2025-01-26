@@ -8,5 +8,6 @@ node {
             checkout scm
             sh 'mvn test'
             junit 'target/surefire-reports/*.xml'
+        }
     }
 }
