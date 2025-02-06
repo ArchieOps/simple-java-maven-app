@@ -1,12 +1,12 @@
 node {
-    docker.image('maven:3.9.6').inside('-u root -v jenkins-data:/var/jenkins_home ') {
+    docker.image('maven:3.9.6').inside('-u root -v /var/jenkins_home/.m2:/root/.m2') {
         stage('Build') {
+            sh 'pwd'
+            sh 'ls -lah'
             sh 'mvn -B -DskipTests clean package -X'
         }
         stage('Test') {
-            checkout scm
             sh 'mvn test'
-            junit 'target/surefire-reports/*.xml'
         }
     }
 }
