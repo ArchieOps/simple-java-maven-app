@@ -1,5 +1,5 @@
 node {
-    docker.image('maven:3.9.6').inside('-u root --volume jenkins-data:/root/.m2') {
+    docker.image('maven:3.9.6').inside('-u root -v jenkins-data:/var/jenkins_home -v "$HOME":/home') {
         stage('Build') {
             sh 'pwd'
             sh 'ls -lah'
