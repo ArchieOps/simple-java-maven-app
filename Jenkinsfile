@@ -3,7 +3,7 @@ node {
         stage('Build') {
             sh 'pwd'
             sh 'ls -lah'
-            sh 'mvn -B -DskipTests clean package'
+            sh 'mvn -B -DskipTests clean package -X'
         }
         stage('Test') {
             sh 'mvn test'
