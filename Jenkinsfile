@@ -1,5 +1,5 @@
 node {
-    docker.image('maven:3.9.6').inside('-u root --volume jenkins-data:/var/jenkins_home') {
+    docker.image('maven:3.9.6').inside('-u root --volume /home/archie/dicoding-devops/java-maven-apps/simple-java-maven-app:/var/jenkins_home') {
         stage('Build') {
             sh 'pwd'
             sh 'ls -lah'
