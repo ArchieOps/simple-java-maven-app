@@ -13,5 +13,12 @@ node {
         stage('Test') {
             sh 'mvn test'
         }
+        stage('Manual Approval'){
+            input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
+        }
+        stage("deploy"){
+            sh './jenkins/scripts/deliver.sh'
+            timeout(time: 1, unit: "MINUTES")
+        }
     }
 }
