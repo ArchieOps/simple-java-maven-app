@@ -18,7 +18,7 @@ node {
         }
         stage("deploy"){
             sh './jenkins/scripts/deliver.sh'
-            timeout(time: 1, unit: "MINUTES")
+            sleep time:1, unit:"MINUTES"
         }
     }
 }
