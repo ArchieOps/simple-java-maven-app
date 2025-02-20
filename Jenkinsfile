@@ -18,14 +18,19 @@ node {
         }
         stage("deploy"){
             sh 'echo "Deploying to server"'
+        
             withCredentials([sshUserPrivateKey(credentialsId: 'private-key-aws-java-app', keyFileVariable: 'privateKey')]) {
-                sh 'echo $privateKey > key.pem'
-                sh 'cat key.pem'
-                sh 'chmod 600 key.pem'
-                sh 'scp -o StrictHostKeyChecking=no -i key.pem target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/ismple-java-maven-app'
-                sh 'ssh -o StrictHostKeyChecking=no -i key.pem ec2-user ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
+                // sh 'echo $privateKey > key.pem'
+                // sh 'cat key.pem'
+                // sh 'chmod 600 key.pem'
+                // sh 'scp -o StrictHostKeyChecking=no -i key.pem target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/ismple-java-maven-app'
+                // sh 'ssh -o StrictHostKeyChecking=no -i key.pem ec2-user ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
+                // sleep (time: 60, unit: 'SECONDS');
+                // sh 'rm -rf key.pem'
+                // echo 'Deployed'
+                sh 'scp -o StrictHostKeyChecking=no -i $privateKey target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/ismple-java-maven-app'
+                sh 'ssh -o StrictHostKeyChecking=no -i $privateKey ec2-user ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
                 sleep (time: 60, unit: 'SECONDS');
-                sh 'rm -rf key.pem'
                 echo 'Deployed'
             }
         }
