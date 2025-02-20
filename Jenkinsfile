@@ -18,8 +18,7 @@ node {
         }
         stage("deploy"){
             sh 'echo "Deploying to server"'
-        
-            withCredentials([sshUserPrivateKey(credentialsId: 'private-key-aws-java-app', variable: 'privateKey')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'private-key-aws-java-app', keyFileVariable: 'privateKey')]) {
                 // sh 'echo $privateKey > key.pem'
                 // sh 'cat key.pem'
                 // sh 'chmod 600 key.pem'
