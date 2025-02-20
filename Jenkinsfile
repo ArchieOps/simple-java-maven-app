@@ -5,6 +5,10 @@ node {
     }
     docker.image('maven:3.9.6').inside('-u root -v /var/jenkins_home/.m2:/root/.m2') {
         // env.MAVEN_OPTS = '-Dmaven.repo.local=/root/.m2/repository'
+        environment {
+            JAVA_CREDS = credentials('private-key-aws-java-app')
+        }
+
         stage('Build') {
             // sh 'pwd'
             // sh 'ls -lah'
@@ -18,7 +22,7 @@ node {
         }
         stage("deploy"){
             sh 'echo "Deploying to server"'
-            withCredentials([sshUserPrivateKey(credentialsId: 'private-key-aws-java-app', keyFileVariable: 'privateKey')]) {
+            // withCredentials([sshUserPrivateKey(credentialsId: 'private-key-aws-java-app', keyFileVariable: 'privateKey')]) {
                 // sh 'echo $privateKey > key.pem'
                 // sh 'cat key.pem'
                 // sh 'chmod 600 key.pem'
@@ -28,11 +32,11 @@ node {
                 // sh 'rm -rf key.pem'
                 // echo 'Deployed'
                 sh "echo $privateKey"
-                sh 'scp -o StrictHostKeyChecking=no -i $privateKey target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/ismple-java-maven-app'
-                sh 'ssh -o StrictHostKeyChecking=no -i $privateKey ec2-user ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
+                sh 'scp -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY} target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/ismple-java-maven-app'
+                sh 'ssh -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY}  ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
                 sleep (time: 60, unit: 'SECONDS');
                 echo 'Deployed'
-            }
+            // }
         }
 
     }
