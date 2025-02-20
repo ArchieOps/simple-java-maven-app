@@ -9,11 +9,6 @@ node {
             // sh 'pwd'
             // sh 'ls -lah'
             sh 'mvn -B -DskipTests clean package'
-            withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                sh 'docker build -t archieops/my-private-repo .'
-                sh "echo $PASS | docker login -u $USER --password-stdin"
-                sh 'docker push archieops/my-private-repo'
-            }
         }
         stage('Test') {
             sh 'mvn test'
@@ -22,9 +17,17 @@ node {
             input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
         }
         stage("deploy"){
-            sh './jenkins/scripts/deliver.sh'
-            sleep time:1, unit:"MINUTES"
-            echo 'Pipeline Succesfully Finished'
+            sh 'echo "Deploying to server"'
+            withCredentials([sshUserPrivateKey(credentialsId: 'private-key-aws-java-app', keyFileVariable: 'privateKey')]) {
+                sh 'echo $privateKey > key.pem'
+                sh 'chmod 600 key.pem'
+                sh 'scp -o StrictHostKeyChecking=no -i key.pem target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/ismple-java-maven-app'
+                sh 'ssh -o StrictHostKeyChecking=no -i key.pem ec2-user ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
+                sleep (time: 60, unit: 'SECONDS');
+                sh 'rm -rf key.pem'
+                echo 'Deployed'
+            }
         }
+
     }
 }
