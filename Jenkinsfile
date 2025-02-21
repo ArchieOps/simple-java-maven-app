@@ -29,7 +29,6 @@ node {
                 sleep (time: 60, unit: 'SECONDS');
                 echo 'Deployed'
             }
-            // }
         }
 
     }
