@@ -27,8 +27,8 @@ node {
                 // sh 'echo $privateKey > key.pem'
                 // sh 'cat key.pem'
                 // sh 'chmod 600 key.pem'
-                sh 'scp -i $privateKey target/*.jar ubuntu@ec2-18-139-95-243.ap-southeast-1.compute.amazonaws.com:/home/ubuntu/simple-java-maven-app'
-                sh 'ssh -i $privateKey ubuntu@ec2-18-139-95-243.ap-southeast-1.compute.amazonaws.com java -jar /home/ubuntu/simple-java-maven-app/*.jar'
+                sh 'scp -o StrictHostKeyChecking=no -i $privateKey target/*.jar ubuntu@ec2-18-139-95-243.ap-southeast-1.compute.amazonaws.com:/home/ubuntu/simple-java-maven-app'
+                sh 'ssh -o StrictHostKeyChecking=no -i $privateKey ubuntu@ec2-18-139-95-243.ap-southeast-1.compute.amazonaws.com java -jar /home/ubuntu/simple-java-maven-app/*.jar'
                 // sleep (time: 60, unit: 'SECONDS');
                 // sh 'rm -rf key.pem'
                 // echo 'Deployed'
