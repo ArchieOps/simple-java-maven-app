@@ -43,6 +43,7 @@ node {
                 // sh 'ssh -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY}  ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
                 sleep (time: 60, unit: 'SECONDS');
                 echo 'Deployed'
+            }
             // }
         }
 
