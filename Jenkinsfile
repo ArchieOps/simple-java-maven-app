@@ -24,23 +24,8 @@ node {
             sh 'echo "Deploying to server"'
             withCredentials([sshUserPrivateKey(credentialsId: 'private-key-aws-java-app', keyFileVariable: 'privateKey')]) {
                 sh 'apt-get update && apt-get -y install openssh-client'
-                // sh 'echo $privateKey > key.pem'
-                // sh 'cat key.pem'
-                // sh 'chmod 600 key.pem'
                 sh 'scp -o StrictHostKeyChecking=no -i $privateKey target/*.jar ubuntu@ec2-18-139-95-243.ap-southeast-1.compute.amazonaws.com:/home/ubuntu/simple-java-maven-app'
                 sh 'ssh -o StrictHostKeyChecking=no -i $privateKey ubuntu@ec2-18-139-95-243.ap-southeast-1.compute.amazonaws.com java -jar /home/ubuntu/simple-java-maven-app/*.jar'
-                // sleep (time: 60, unit: 'SECONDS');
-                // sh 'rm -rf key.pem'
-                // echo 'Deployed'
-
-                //SCP to server deployment
-                // sh 'scp -i ${JAVA_CREDS_KEY} target/*.jar ubuntu@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ubuntu/simple-java-maven-app'
-
-                //SSH to server deployment
-                // sh 'ssh -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY}  ubuntu@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ubuntu/simple-java-maven-app/*.jar'
-
-                // sh 'scp -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY} target/*.jar ubuntu@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ubuntu/simple-java-maven-app'
-                // sh 'ssh -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY}  ubuntu@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ubuntu/simple-java-maven-app/*.jar'
                 sleep (time: 60, unit: 'SECONDS');
                 echo 'Deployed'
             }
