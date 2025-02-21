@@ -32,7 +32,7 @@ node {
                 // sh 'rm -rf key.pem'
                 // echo 'Deployed'
                 sh "echo $privateKey"
-                sh 'scp -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY} target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/ismple-java-maven-app'
+                sh 'scp -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY} target/*.jar ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com:/home/ec2-user/simple-java-maven-app'
                 sh 'ssh -o StrictHostKeyChecking=no -i ${JAVA_CREDS_KEY}  ec2-user@ec2-3-1-84-79.ap-southeast-1.compute.amazonaws.com java -jar /home/ec2-user/simple-java-maven-app/*.jar'
                 sleep (time: 60, unit: 'SECONDS');
                 echo 'Deployed'
